@@ -1,0 +1,130 @@
+// Основной контейнер карточки
+Frame (580x525) {
+  name: "Создание объёма инвестиций"
+  style:
+    display: flex;
+    flex-direction: column;
+    background: #F9FAFE;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 0px 2px 1px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 0px;
+
+  // Заголовок карточки
+  Frame (580x64) {
+    name: "v-card__title"
+    style:
+      padding: 16px;
+      justify-content: space-between;
+      align-items: center;
+    
+    Text (548x32) {
+      content: "Создание объёма инвестиций"
+      style:
+        font-family: 'Roboto';
+        font-weight: 500;
+        font-size: 20px;
+        color: rgba(0, 0, 0, 0.87);
+    }
+  }
+
+  // Основное содержимое
+  Frame (580x395) {
+    name: "v-card-text"
+    style:
+      padding: 16px;
+      flex-direction: column;
+      gap: 16px;
+
+    // Источник финансирования
+    Dropdown (548x40) {
+      name: "Источник финансирования"
+      style:
+        background: #FFFFFF;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2), 0px 2px 2px rgba(0, 0, 0, 0.14);
+        border-radius: 10px;
+        padding: 8px 12px;
+      
+      Placeholder: "Выберите источник финансирования"
+      Options: ["Внебюджетное финансирование", "Региональное финансирование"]
+    }
+
+    // Помесячная таблица
+    Frame (548x280) {
+      name: "Месячная таблица"
+      style:
+        display: grid;
+        grid-template-columns: 120px 1fr 1fr 1fr;
+        gap: 8px;
+        overflow-y: auto;
+
+      // Заголовки столбцов
+      Text { content: "Месяц"; font-weight: 700 }
+      Text { content: "План (тыс. руб.)"; font-weight: 700 }
+      Text { content: "Факт (тыс. руб.)"; font-weight: 700 }
+      Text { content: "Отклонение"; font-weight: 700 }
+
+      // Строки с месяцами
+      ForEach(month in months) {
+        Frame (auto) {
+          Text { content: month.name }
+          InputField { placeholder: "0", type: "number" }
+          InputField { placeholder: "0", type: "number" }
+          Text {
+            content: calculateDeviation(plan, fact)
+            style: 
+              color: deviation >= 0 ? "#2E7D32" : "#C62828";
+              font-weight: 500;
+          }
+        }
+      }
+    }
+
+    // Итоговая строка
+    Frame (548x40) {
+      name: "Итоги"
+      style:
+        display: flex;
+        justify-content: space-between;
+        background: #EDF2F7;
+        padding: 8px 12px;
+        border-radius: 8px;
+
+      Text { content: "Итого за год:" }
+      Text { content: "План: 0 тыс. руб." }
+      Text { content: "Факт: 0 тыс. руб." }
+      Text { 
+        content: "Отклонение: 0 тыс. руб." 
+        style: color: "#C62828"; font-weight: 500
+      }
+    }
+  }
+
+  // Кнопки действий
+  Frame (580x52) {
+    name: "v-card-actions"
+    style:
+      justify-content: flex-end;
+      padding: 8px;
+      gap: 8px;
+
+    Button (98x36) {
+      style: 
+        background: transparent;
+        border: 1px solid #1976D2;
+      Text { 
+        content: "Отмена"
+        style: color: #1976D2; 
+      }
+    }
+    
+    Button (113x36) {
+      style: 
+        background: #1976D2;
+        border-radius: 50px;
+      Text { 
+        content: "Сохранить"
+        style: color: #FFFFFF; 
+      }
+    }
+  }
+}
